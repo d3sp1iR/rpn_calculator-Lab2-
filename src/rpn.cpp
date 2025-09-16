@@ -3,6 +3,7 @@
 #include <stack>
 #include <stdexcept>
 #include <iostream>
+#include <cmath>
 
 double evaluate_rpn(const std::string& expression) {
     std::istringstream iss(expression);
@@ -10,7 +11,7 @@ double evaluate_rpn(const std::string& expression) {
     std::stack<double> stack;
 
     while (iss >> token) {
-        if (token == "+" || token == "-" || token == "*" || token == "/") {
+        if (token == "+" || token == "-" || token == "*" || token == "/" || token == "^") {
             if (stack.size() < 2) {
                 throw std::invalid_argument("Not enough operands for operator: " + token);
             }
@@ -24,6 +25,7 @@ double evaluate_rpn(const std::string& expression) {
                 if (b == 0) throw std::invalid_argument("Division by zero");
                 stack.push(a / b);
             }
+            else if (token == "^") stack.push(std::pow(a, b));
         } else {
             try {
                 double num = std::stod(token);
